@@ -1,0 +1,59 @@
+﻿@model List<Osiansdrystonewalls.com.Models.Domain.Customer>
+
+@{
+}
+
+<div class="bg-secondary">
+    <div class="container bg-secondary text-light py-2">
+        <h1>View All Accounts</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    @if (Model != null && Model.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Post Code</th>
+                    <th> </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var account in Model)
+                {
+                    <tr>
+                        <td>@account.Id</td>
+                        <td>@account.FullName</td>
+                        <td>@account.Email</td>
+                        <td>@account.PhoneNumber</td>
+                        <td>@account.PostCode</td>
+                        <td>@account.Password</td>
+                        <td>
+                            <a asp-area="" asp-controller="Admin" asp-action="AdminEditAccounts"
+                            asp-route-id="@account.Id">Edit</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p> No Accounts Found </p>
+    }
+    </div>
+
+    <div class="container py-5">
+    <form method="post">
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-success" asp-area="" asp-controller="Admin" asp-action="AdminPage">Return To Admin Home Page</button>
+        </div>
+
+    </form>
+</div>

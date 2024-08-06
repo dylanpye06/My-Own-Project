@@ -10,7 +10,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-success border-bottom box-dark>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-success border-bottom box-dark">
             <div class="container">
                 <a class="navbar-brand text-light" asp-area="" asp-controller="Home" asp-action="HomePage">Osians Dry Stone Walls</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -19,27 +19,22 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="HomePage">Home</a>
                         </li>
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-light bg-success" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Create Account / Log In
-                            </a>
-                            <ul class="dropdown-menu bg-success">
-                                <li><a class="dropdown-item text-light bg-success" 
-                                    asp-area="" asp-controller="LogIn" asp-action="LogIn">Log In</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item text-light bg-success" 
-                                    asp-area="" asp-controller="CreateAccount" asp-action="CreateAccount">Create An Account</a></li>
-                            </ul>
+                      
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Customer" asp-action="CreateAccount">Create Account</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="MakeABooking" asp-action="MakeABooking">Make A Booking</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Customer" asp-action="LogIn">Log In</a>
                         </li>
-                        
+
+                        <li class="nav-item ml-auto">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Admin" asp-action="AdminLogIn">Admin Log In</a>
+                        </li>  
                     </ul>
                 </div>
             </div>
@@ -53,7 +48,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - Osiansdrystonewalls.com - <a asp-area="" asp-controller="Home" asp-action="CreateAccount">Create Account</a>
+            &copy; 2024 - Osiansdrystonewalls.com
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

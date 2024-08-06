@@ -1,0 +1,29 @@
+﻿@model Osiansdrystonewalls.com.Models.ViewModels.AdminRequest
+@{
+}
+
+<div class="bg-secondary">
+    <div class="container bg-secondary text-light py-2">
+        <h1>Admin Log In</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    <form method="post">
+
+        <div class="mb-3">
+            <label class="form-label">Admin Email</label>
+            <input type="text" class="form-control" id="adminemail" asp-for="adminEmail"/>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Admin Password</label>
+            <input type="text" class="form-control" id="adminpassword" asp-for="adminPassword"/>
+        </div>
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-success" asp-area="" asp-controller="Admin" asp-action="AdminLogIn">Log In</button>
+        </div>
+
+    </form>
+</div>

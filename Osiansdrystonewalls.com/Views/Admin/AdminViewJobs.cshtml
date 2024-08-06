@@ -1,0 +1,53 @@
+﻿@model List<Osiansdrystonewalls.com.Models.Domain.JobRequest>
+
+@{
+}
+
+<div class="bg-secondary">
+    <div class="container bg-secondary text-light py-2">
+        <h1>View All Job Requests</h1>
+    </div>
+</div>
+
+
+<div class="container py-5">
+    @if (Model != null && Model.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>JobName</th>
+                    <th>Description</th>
+                    <th> </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var jobRequest in Model)
+                {
+                    <tr>
+                        <td>@jobRequest.JobName</td>
+                        <td>@jobRequest.Description</td>
+                        <td>
+                            <a asp-area="" asp-controller="Admin" asp-action="AdminEditJobs"
+                               asp-route-id="@jobRequest.Id">Edit</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else if (Model == null)
+    {
+        <p>No Jobs Found! :(</p>
+    }
+</div>
+
+<div class="container py-5">
+    <form method="post">
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-success" asp-area="" asp-controller="Admin" asp-action="AdminPage">Return To Admin Page</button>
+        </div>
+
+    </form>
+</div>

@@ -13,9 +13,10 @@ namespace Osiansdrystonewalls.com.Controllers
             _logger = logger;
         }
 
+        [ActionName("HomePage")]
         public IActionResult HomePage()
         {
-            return View();
+            return View("HomePage");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

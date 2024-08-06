@@ -1,8 +1,6 @@
-﻿using System.Reflection;
-
-namespace Osiansdrystonewalls.com.Models.Domain
+﻿namespace Osiansdrystonewalls.com.Models.ViewModels
 {
-    public class JobRequest
+    public class AdminEditJobRequest
     {
         public Guid Id { get; set; }
         public required string JobName { get; set; }

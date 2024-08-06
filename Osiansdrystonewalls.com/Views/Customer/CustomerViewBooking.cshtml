@@ -1,0 +1,45 @@
+﻿@model Osiansdrystonewalls.com.Models.Domain.JobRequest
+
+@{
+}
+
+<div class="bg-secondary">
+    <div class="container bg-secondary text-light py-2">
+        <h1>View Bookings</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    @if (Model != null)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Job Name</th>
+                    <th>Description</th>
+                    <th> </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Model.Id</td>
+                    <td>@Model.JobName</td>
+                    <td>@Model.Description</td>
+                    <td>
+                        <a asp-area="" asp-controller="Customer" asp-action="CustomerEditBookings"
+                           asp-route-id="@Model.Id">Edit</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p> No Bookings Found </p>
+    }
+</div>
+
+<div class="container mb-3 py-2">
+    <a class="btn btn-success" asp-area="" asp-controller="Customer" asp-action="LoggedIn">Back</a>
+</div>

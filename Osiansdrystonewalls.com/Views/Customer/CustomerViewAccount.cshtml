@@ -1,0 +1,51 @@
+﻿@model Osiansdrystonewalls.com.Models.Domain.Customer
+
+@{
+}
+
+<div class="bg-secondary">
+    <div class="container bg-secondary text-light py-2">
+        <h1>View Account</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    @if (Model != null)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Post Code</th>
+                    <th> </th>
+                </tr>
+            </thead>
+            <tbody>               
+                    <tr>
+                        <td>@Model.Id</td>
+                        <td>@Model.FullName</td>
+                        <td>@Model.Email</td>
+                        <td>@Model.PhoneNumber</td>
+                        <td>@Model.PostCode</td>
+                        <td>@Model.Password</td>
+                        <td>
+                            <a asp-area="" asp-controller="Customer" asp-action="CustomerEditAccount"
+                               asp-route-id="@Model.Id">Edit</a>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p> No Accounts Found </p>
+    }
+</div>
+
+<div class="container mb-3 py-2">
+    <a class="btn btn-success" asp-area="" asp-controller="Customer" asp-action="LoggedIn"
+       >Back</a>
+</div>

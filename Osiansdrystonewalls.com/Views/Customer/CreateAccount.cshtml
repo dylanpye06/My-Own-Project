@@ -1,0 +1,44 @@
+﻿@model Osiansdrystonewalls.com.Models.ViewModels.CreateAccountRequest
+@{
+}
+
+<div class="bg-secondary">
+    <div class="container bg-secondary text-light py-2">
+        <h1>Create Account</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    <form method="post">
+
+        <div class="mb-3">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="fullName" asp-for="FullName" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="text" class="form-control" id="email" asp-for="Email" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Phone Number</label>
+            <input type="text" class="form-control" id="phoneNumber" asp-for="PhoneNumber" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Post Code</label>
+            <input type="text" class="form-control" id="postCode" asp-for="PostCode" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="text" class="form-control" id="password" asp-for="Password" />
+        </div>
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-success">Create Account</button>
+        </div>
+
+    </form>
+</div>

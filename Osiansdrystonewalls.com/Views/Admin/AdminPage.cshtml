@@ -1,0 +1,26 @@
+﻿@{
+}
+
+<div class="bg-secondary">
+    <div class="container bg-secondary text-light py-2">
+        <h1>Admin Logged In, Welcome to Your Page Osian :)</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    <form method="post">
+
+        <p> Click To View, Edit Or Delete Any Customer</p>
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-success" asp-area="" asp-controller="Admin" asp-action="AdminViewAccounts">View Accounts</button>
+        </div>
+         
+        <p> Click To View, Edit , Delete or Reply To Any Of Your Job Reqeusts</p>
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-success" asp-area="" asp-controller="Admin" asp-action="AdminViewJobs">View Job Reqeusts</button>
+        </div>
+
+    </form>
+</div>

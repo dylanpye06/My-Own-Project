@@ -1,0 +1,33 @@
+﻿@model Osiansdrystonewalls.com.Models.ViewModels.MakeABookingRequest
+@{
+}
+
+<div class="bg-secondary">
+    <div class="container bg-secondary text-light py-2">
+        <h1>Make A Booking</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    <form method="post">
+
+        <div class="mb-3">
+            <label class="form-label">Job Name</label>
+            <input type="text" class="form-control" id="JoName" asp-for="JobName" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Descripton</label>
+            <input type="text" class="form-control" id="Description" asp-for="Description" />
+        </div>
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-success" asp-area="" asp-controller="Customer" asp-action="MakeABooking">Book Job</button>
+        </div>
+
+        <div class="mb-3">
+            <a class="btn btn-danger" asp-area="" asp-controller="Customer" asp-action="LoggedIn">Cancel</a>
+        </div>
+
+    </form>
+</div>

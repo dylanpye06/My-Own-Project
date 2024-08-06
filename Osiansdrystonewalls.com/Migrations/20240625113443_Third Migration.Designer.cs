@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Osiansdrystonewalls.com.Data;
 
@@ -11,9 +12,11 @@ using Osiansdrystonewalls.com.Data;
 namespace Osiansdrystonewalls.com.Migrations
 {
     [DbContext(typeof(DatabaseLinkDb))]
-    partial class DatabaseLinkDbModelSnapshot : ModelSnapshot
+    [Migration("20240625113443_Third Migration")]
+    partial class ThirdMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

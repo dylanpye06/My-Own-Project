@@ -1,0 +1,39 @@
+﻿@model Osiansdrystonewalls.com.Models.ViewModels.LogInRequest
+@{
+}
+
+<div class="bg-secondary">
+    <div class="container bg-secondary text-light py-2">
+        <h1>If you already have an account please log in below.</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    <form method="post">
+
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="text" class="form-control" id="checkemail" asp-for="checkEmail" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="text" class="form-control" id="checkpassword" asp-for="checkPassword" />
+        </div>
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-success" asp-area="" asp-controller="Customer" asp-action="LogIn" >Log In</button>
+        </div>
+
+    </form>
+</div>
+
+<div class="bg-secondary">
+    <div class="container bg-secondary text-light py-2">
+        <p1>If you do not have an account please click the button below.</p1>
+    </div>
+</div>
+
+<div class="mb-3 py-2">
+    <a class="btn btn-success" asp-area="" asp-controller="Customer" asp-action="CreateAccount">Create Account</a>
+</div>

@@ -1,0 +1,57 @@
+﻿@model Osiansdrystonewalls.com.Models.ViewModels.AdminEditAccountRequest
+@{
+}
+
+<div class="bg-secondary">
+    <div class="container bg-secondary text-light py-2">
+        <h1>Admin Edit Accounts</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+
+    <form method="post">
+
+        <div class="mb-3">
+            <label class="form-label">Id</label>
+            <input type="text" id="Id" class="form-control" asp-for="Id" readonly />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Full Name</label>
+            <input type="text" id="FullName" class="form-control" asp-for="FullName" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="text" id="Email" class="form-control" asp-for="Email" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Phone Number</label>
+            <input type="text" id="PhoneNumber" class="form-control" asp-for="PhoneNumber" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="text" id="Password" class="form-control" asp-for="Password" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Post Code</label>
+            <input type="text" id="PostCode" class="form-control" asp-for="PostCode" />
+        </div>
+
+        <div class="mb-3">
+
+            <div class="d-flex">
+
+                <button type="submit" class="btn btn-success">Save Changes</button>
+
+                <button type="submit" class="btn btn-danger ms-2" asp-area="" asp-controller="Admin" asp-action="DeleteAccount">Delete</button>
+
+            </div>
+        </div>
+        </form>
+
+</div>

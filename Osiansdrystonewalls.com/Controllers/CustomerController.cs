@@ -4,16 +4,18 @@ using Microsoft.EntityFrameworkCore;
 using Osiansdrystonewalls.com.Data;
 using Osiansdrystonewalls.com.Models.Domain;
 using Osiansdrystonewalls.com.Models.ViewModels;
+using Osiansdrystonewalls.com.Repositories;
 
 namespace Osiansdrystonewalls.com.Controllers
 {
     public class CustomerController : Controller
     {
-
-        private readonly DatabaseLinkDb databaseLinkDb;
-        public CustomerController(DatabaseLinkDb databaseLinkDb)
+        private readonly IAccountRepository accountRepository;
+        private readonly IBookingRepository bookingRepository;
+        public CustomerController(IAccountRepository accountRepository, IBookingRepository bookingRepository)
         {
-            this.databaseLinkDb = databaseLinkDb;
+            this.accountRepository = accountRepository;
+            this.bookingRepository = bookingRepository;
         }
 
         [HttpGet]
@@ -28,20 +30,25 @@ namespace Osiansdrystonewalls.com.Controllers
         {
             var customer = new Customer
             {
-
                 FullName = createAccountRequest.FullName,
-                Email = createAccountRequest.Email,    //new bit of code may be why it wont work?
+                Email = createAccountRequest.Email, 
                 PhoneNumber = createAccountRequest.PhoneNumber,
                 PostCode = createAccountRequest.PostCode,
                 Password = createAccountRequest.Password
+            };
 
-            };         
-                await databaseLinkDb.Customers.AddAsync(customer);
-                await databaseLinkDb.SaveChangesAsync();
-                return View("HomePage");         
+            var checkEmail = await accountRepository.CreateAccountCheck(createAccountRequest);
+
+            if (checkEmail != null)
+            {
+                return View("Error");
+            }
+
+            await accountRepository.AddASync(customer);
+            return View("HomePage");         
         }
 
-        [HttpGet]      
+        [HttpGet]
         public IActionResult LogIn()
         {
             return View("LogIn");
@@ -51,25 +58,33 @@ namespace Osiansdrystonewalls.com.Controllers
         [ActionName("LogIn")]
         public async Task<IActionResult> LogIn(LogInRequest logInRequest)
         {
-            var foundCustomer = await databaseLinkDb.Customers.Where(cust => cust.Email == logInRequest.checkEmail).FirstOrDefaultAsync();
+            // var foundCustomer = await databaseLinkDb.Customers.Where(cust => cust.Email == logInRequest.checkEmail).FirstOrDefaultAsync();
 
-            if (foundCustomer == null)
+            var foundCustomer1 = await accountRepository.GetAccountSync(logInRequest);
+
+            var customerID = foundCustomer1.Id;
+
+            var foundCustomer = await accountRepository.GetASync(customerID);
+
+            if (foundCustomer1 == null)
             {
                 return View("IncorrectEmail");
             }
 
-            if (foundCustomer.Password != logInRequest.checkPassword)
+            if (foundCustomer1.Password != logInRequest.CheckPassword)
             {
                 return View("IncorrectPassword");
             }
-            return RedirectToAction("LoggedIn",foundCustomer);
+            return RedirectToAction("LoggedIn", foundCustomer);
         }
 
         [HttpGet]
         [ActionName("LoggedIn")]
-        public IActionResult LoggedIn(Customer foundCustomer)
+        public async Task<IActionResult> LoggedIn(Customer foundCustomer, Guid id)
         {
-            return View(foundCustomer);
+            var foundCustomer1 = await accountRepository.GetASync(id);
+
+            return View(foundCustomer1);
         }
 
         [HttpPost]
@@ -88,10 +103,7 @@ namespace Osiansdrystonewalls.com.Controllers
                 JobName = makeABookingRequest.JobName,
                 Description = makeABookingRequest.Description
             };
-
-            await databaseLinkDb.JobRequests.AddAsync(jobRequest);
-            await databaseLinkDb.SaveChangesAsync();
-
+            await bookingRepository.AddASync(jobRequest);
             return RedirectToAction("LoggedIn");
         }
 
@@ -99,15 +111,15 @@ namespace Osiansdrystonewalls.com.Controllers
         [ActionName("CustomerViewAccount")]
         public async Task<IActionResult> CustomerViewAccount(Guid id)
         {
-            var foundCustomer = await databaseLinkDb.Customers.Where(x => x.Id == id).FirstOrDefaultAsync();
-            
-            return View("CustomerViewAccount", foundCustomer);
+            var foundCustomer = await accountRepository.GetASync(id);
+            return View(foundCustomer);
         }
 
         [HttpGet]
         public async Task<IActionResult> CustomerEditAccount(Guid Id)
         {
-            var account = await databaseLinkDb.Customers.FirstOrDefaultAsync(x => x.Id == Id);
+            var account = await accountRepository.GetASync(Id);
+
             if (account != null)
             {
                 var editAccountRequest = new AdminEditAccountRequest
@@ -129,7 +141,7 @@ namespace Osiansdrystonewalls.com.Controllers
 
         [HttpPost]
         [ActionName("CustomerEditAccount")]
-        public async Task<IActionResult> CustomerEditAccount(AdminEditAccountRequest editAccountRequest)
+        public async Task<IActionResult> CustomerEditAccount(AdminEditAccountRequest editAccountRequest, Guid id)
         {
             var customer = new Customer
             {
@@ -140,28 +152,16 @@ namespace Osiansdrystonewalls.com.Controllers
                 Password = editAccountRequest.Password,
                 PostCode = editAccountRequest.PostCode
             };
-            var existingAccount = await databaseLinkDb.Customers.FindAsync(customer.Id);
-
-            if (existingAccount != null)
-            {
-                existingAccount.FullName = customer.FullName;
-                existingAccount.Email = customer.Email;
-                existingAccount.PhoneNumber = customer.PhoneNumber;
-                existingAccount.Password = customer.Password;
-                existingAccount.PostCode = customer.PostCode;
-
-                await databaseLinkDb.SaveChangesAsync();
-
-                return RedirectToAction("LoggedIn");
-            }
-            return RedirectToAction("Error");
+            var existingAccount = accountRepository.GetASync(id);
+            await accountRepository.UpdateASync(customer);
+            return RedirectToAction("LoggedIn", existingAccount);
         }
 
         [HttpGet]
         [ActionName("CustomerViewBooking")]
         public async Task<IActionResult> CustomerViewBooking(Guid id)
         {
-            var foundBooking = await databaseLinkDb.JobRequests.Where(x => x.Id == id).FirstOrDefaultAsync();
+            var foundBooking = await bookingRepository.GetASync(id);
 
             return View("CustomerViewBooking", foundBooking);
         }
@@ -169,8 +169,9 @@ namespace Osiansdrystonewalls.com.Controllers
         [HttpGet]
         public async Task<IActionResult> CustomerEditBooking(Guid Id)
         {
-            var jobRequest = await databaseLinkDb.JobRequests.FirstOrDefaultAsync(x => x.Id == Id);
-            if (jobRequest != null)
+            var jobRequest = await bookingRepository.GetASync(Id);
+
+            if(jobRequest != null)
             {
                 var editJobRequest = new AdminEditJobRequest
                 {
@@ -187,27 +188,47 @@ namespace Osiansdrystonewalls.com.Controllers
         }
 
         [HttpPost]
-        [ActionName("CustomerEditAccount")]
+        [ActionName("CustomerEditBooking")]
         public async Task<IActionResult> CustomerEditBooking(AdminEditJobRequest editJobRequest)
         {
-            var jobRequest = new AdminEditJobRequest
+            var jobRequest = new JobRequest
             {
                 Id = editJobRequest.Id,
                 JobName = editJobRequest.JobName,
                 Description = editJobRequest.Description,
             };
-            var existingBooking = await databaseLinkDb.JobRequests.FindAsync(jobRequest.Id);
+           // var existingBooking = 
+                await bookingRepository.UpdateASync(jobRequest);
 
-            if (existingBooking != null)
+            return RedirectToAction("LoggedIn");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteAccountRequest(AdminEditAccountRequest adminEditAccountRequest)
+        {
+            var account = await accountRepository.DeleteASync(adminEditAccountRequest.Id);
+
+            if (account != null)
             {
-                existingBooking.JobName = jobRequest.JobName;
-                existingBooking.Description = jobRequest.Description;
-
-                await databaseLinkDb.SaveChangesAsync();
-
-                return RedirectToAction("LoggedIn");
+                //show success notification
+                return View("HomePage");
             }
-            return RedirectToAction("Error");
+            //show error notification
+            return View("Error");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteJobRequest(AdminEditJobRequest adminEditJobRequest)
+        {
+            var jobRequest = await bookingRepository.DeleteASync(adminEditJobRequest.Id);
+
+            if (jobRequest != null)
+            {
+                //show success notification
+                return View("LoggedIn");
+            }
+            //show error notification
+            return View("Error");
         }
     }
 }

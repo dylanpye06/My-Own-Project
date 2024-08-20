@@ -4,15 +4,19 @@ using Osiansdrystonewalls.com.Data;
 using Osiansdrystonewalls.com.Models;
 using Osiansdrystonewalls.com.Models.Domain;
 using Osiansdrystonewalls.com.Models.ViewModels;
+using Osiansdrystonewalls.com.Repositories;
+
 
 namespace Osiansdrystonewalls.com.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly DatabaseLinkDb databaseLinkDb;
-        public AdminController(DatabaseLinkDb databaseLinkDb)
+        private readonly IAccountRepository accountRepository;
+        private readonly IBookingRepository bookingRepository;
+        public AdminController(IAccountRepository accountRepository, IBookingRepository bookingRepository)
         {
-            this.databaseLinkDb = databaseLinkDb;
+            this.accountRepository = accountRepository;
+            this.bookingRepository = bookingRepository;
         }
 
         [HttpGet]
@@ -50,32 +54,36 @@ namespace Osiansdrystonewalls.com.Controllers
             return View();
         }
 
-        [HttpPost]       
-        public IActionResult AdminPage(Test test)
-        {
-            return View();
-        }
+       // [HttpPost]       
+       // public IActionResult AdminPage(Test test)
+       // {
+       //     return View();
+       // }
 
         [HttpPost]
         [ActionName("AdminViewAccounts")]
-        public async Task<IActionResult> AdminViewAccounts(CreateAccountRequest createAccountRequest)
+        public async Task<IActionResult> AdminViewAccounts(
+          //  CreateAccountRequest createAccountRequest
+            )
         {
-            var accounts = await databaseLinkDb.Customers.ToListAsync();
+            var accounts = await accountRepository.GetAllASync();
             return View(accounts);
         }
 
         [HttpPost]
         [ActionName("AdminViewJobs")]
-        public async Task<IActionResult> AdminViewJobRequests(MakeABookingRequest makeABookingRequest)
-        {      
-            var jobRequests = await databaseLinkDb.JobRequests.ToListAsync();
+        public async Task<IActionResult> AdminViewJobRequests(
+         //   MakeABookingRequest makeABookingRequest
+            )
+        {
+            var jobRequests = await bookingRepository.GetAllASync();
             return View(jobRequests);
         }
 
         [HttpGet]
         public async Task<IActionResult> AdminEditAccounts(Guid Id)
         {
-            var account = await databaseLinkDb.Customers.FirstOrDefaultAsync(x => x.Id == Id);
+            var account = await accountRepository.GetASync(Id);
             if (account != null)
             {
                 var adminEditAccountRequest = new AdminEditAccountRequest
@@ -108,49 +116,28 @@ namespace Osiansdrystonewalls.com.Controllers
                 Password = adminEditAccountRequest.Password,
                 PostCode = adminEditAccountRequest.PostCode
             };
-            var existingAccount = await databaseLinkDb.Customers.FindAsync(customer.Id);
-
-            if(existingAccount != null)
-            {
-                existingAccount.FullName = customer.FullName;
-                existingAccount.Email = customer.Email;
-                existingAccount.PhoneNumber = customer.PhoneNumber;
-                existingAccount.Password = customer.Password;
-                existingAccount.PostCode = customer.PostCode;
-
-                await databaseLinkDb.SaveChangesAsync();
-
-                return View("AdminPage");
-            }
-                return RedirectToAction("Error");                 
+            await accountRepository.UpdateASync(customer);
+            return RedirectToAction("AdminPage");                 
         }
 
         [HttpPost]
         public async Task<IActionResult> DeleteAccount(AdminEditAccountRequest adminEditAccountRequest)
         {
-            var account = await databaseLinkDb.Customers.FindAsync(adminEditAccountRequest.Id);
+            var account = await accountRepository.DeleteASync(adminEditAccountRequest.Id);
 
             if(account != null) 
             { 
-                databaseLinkDb.Customers.Remove(account);
-                await databaseLinkDb.SaveChangesAsync();
-
                 //show success notification
-
-                //consider reidrect to action
-
                 return View("AdminPage");
             }
-
             //show error notification
-
             return View("Error");
         }
 
         [HttpGet]
         public async Task<IActionResult> AdminEditJobs(Guid Id)
         {
-            var jobRequest = await databaseLinkDb.JobRequests.FirstOrDefaultAsync(x => x.Id == Id);
+            var jobRequest = await bookingRepository.GetASync(Id);
             if (jobRequest != null)
             {
                 var adminEditJobRequest = new AdminEditJobRequest
@@ -177,39 +164,21 @@ namespace Osiansdrystonewalls.com.Controllers
                 JobName = adminEditJobRequest.JobName,
                 Description = adminEditJobRequest.Description,
             };
-            var existingJobRequest = await databaseLinkDb.JobRequests.FindAsync(jobRequest.Id);
-
-            if (existingJobRequest != null)
-            {
-                existingJobRequest.JobName = jobRequest.JobName;
-                existingJobRequest.Description = jobRequest.Description;               
-
-                await databaseLinkDb.SaveChangesAsync();
-
-                return View("AdminPage");
-            }
-            return RedirectToAction("Error");
+            await bookingRepository.UpdateASync(jobRequest);
+            return RedirectToAction("AdminPage");
         }
 
         [HttpPost]
         public async Task<IActionResult> DeleteJobRequest(AdminEditJobRequest adminEditJobRequest)
         {
-            var jobRequest = await databaseLinkDb.JobRequests.FindAsync(adminEditJobRequest.Id);
+            var jobRequest = await bookingRepository.DeleteASync(adminEditJobRequest.Id);
 
             if (jobRequest != null)
             {
-                databaseLinkDb.JobRequests.Remove(jobRequest);
-                await databaseLinkDb.SaveChangesAsync();
-
                 //show success notification
-
-                //consider reidrect to action
-
                 return View("AdminPage");
             }
-
             //show error notification
-
             return View("Error");
         }
     }

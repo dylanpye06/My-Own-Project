@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Osiansdrystonewalls.com.Data;
+using Osiansdrystonewalls.com.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,10 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<DatabaseLinkDb>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("ThisIsAConnectionString")));
+
+ builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+ builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+
 
 var app = builder.Build();
 

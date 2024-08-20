@@ -2,8 +2,8 @@
 @{
 }
 
-<div class="bg-secondary">
-    <div class="container bg-secondary text-light py-2">
+<div class="bg-secondary bg-opacity-25 py-2">
+    <div class="container">
         <h1>Edit Accounts</h1>
     </div>
 </div>
@@ -46,9 +46,10 @@
 
             <div class="d-flex">
 
-                <button type="submit" class="btn btn-success ms-2" asp-area="" asp-controller="Customer" asp-action="CustomerViewAccount" >Save Changes</button>
+                 <a class="btn btn-success" asp-area="" asp-controller="Customer" asp-action="CustomerViewAccount"
+                       asp-route-id="@Model.Id">Save Changes</a>
 
-                <button type="submit" class="btn btn-danger ms-2" asp-area="" asp-controller="Customer" asp-action="DeleteAccount">Delete</button>
+                <button type="submit" class="btn btn-danger ms-2" asp-area="" asp-controller="Customer" asp-action="DeleteAccountRequest">Delete</button>
 
             </div>
         </div>

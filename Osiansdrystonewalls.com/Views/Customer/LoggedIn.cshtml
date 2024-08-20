@@ -1,36 +1,42 @@
 ﻿@model Osiansdrystonewalls.com.Models.Domain.Customer
+
 @{
 }
+        @if (Model != null)
+        {
+            <div class="bg-secondary bg-opacity-25 py-2">
+                 <div class="container">
+                     <h1>Welcome @Model.FullName :)</h1>
+                 </div>
+              </div>
 
-<div class="bg-secondary">
-    <div class="container bg-secondary text-light py-2">
-        <h1>Logged In @Model.FullName :)</h1>
+            <div class="container py-5">
+                <form method="post">
+
+                    <p> Click To Make A Booking</p>
+
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-success" asp-area="" asp-controller="Customer" asp-action="LoadMakeABooking">Make A Booking</button>
+                    </div>
+
+                    <p> Click To View Or Edit Your Account Details</p>
+
+                    <div class="mb-3">
+                        <a class="btn btn-success" asp-area="" asp-controller="Customer" asp-action="CustomerViewAccount"
+                           asp-route-id="@Model.Id">Your Account</a>
+                    </div>
+
+                    <p> Click To Edit Or View Updates Of Your Bookings</p>
+
+                    <div class="mb-3">
+                        <a class="btn btn-success" asp-area="" asp-controller="Customer" asp-action="CustomerViewBooking"
+                           asp-route-id="@Model.Id">Your Booking</a>
+                    </div>
+
+                </form>
     </div>
-</div>
-
-<div class="container py-5">
-    <form method="post">
-
-        <p> Click To Make A Booking</p>
-
-        <div class="mb-3">
-            <button type="submit" class="btn btn-success" asp-area="" asp-controller="Customer" asp-action="LoadMakeABooking">Make A Booking</button>
-        </div>
-
-        <p> Click To View Or Edit Your Account Details</p>
-
-        <div class="mb-3">
-            <a class="btn btn-success" asp-area="" asp-controller="Customer" asp-action="CustomerViewAccount"
-                asp-route-id="@Model.Id">Your Account</a>
-        </div>
-
-        <p> Click To Edit Or View Updates Of Your Bookings</p>
-
-        <div class="mb-3">
-            <a class="btn btn-success" asp-area="" asp-controller="Customer" asp-action="CustomerViewBooking"
-               asp-route-id="@Model.Id">Your Booking</a>
-        </div>
-
-
-    </form>
-</div>
+}
+else
+{
+    <p> no accounts found (error)</p>
+}

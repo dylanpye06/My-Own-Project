@@ -2,8 +2,8 @@
 @{
 }
 
-<div class="bg-secondary">
-    <div class="container bg-secondary text-light py-2">
+<div class="bg-secondary bg-opacity-25 py-2">
+    <div class="container">
         <h1>Admin Log In</h1>
     </div>
 </div>
@@ -24,6 +24,8 @@
         <div class="mb-3">
             <button type="submit" class="btn btn-success" asp-area="" asp-controller="Admin" asp-action="AdminLogIn">Log In</button>
         </div>
+
+        <a class="btn btn-dark" asp-area="" asp-controller="Home" asp-action="HomePage">Back</a>
 
     </form>
 </div>

@@ -6,14 +6,8 @@ using Osiansdrystonewalls.com.Models.ViewModels;
 
 namespace Osiansdrystonewalls.com.Repositories
 {
-    public class AccountRepository : IAccountRepository
+    public class AccountRepository(DatabaseLinkDb databaseLinkDb) : IAccountRepository
     {
-        private readonly DatabaseLinkDb databaseLinkDb;
-        public AccountRepository(DatabaseLinkDb databaseLinkDb)
-        {
-            this.databaseLinkDb = databaseLinkDb;
-        }
-
         public async Task<Customer> AddASync(Customer customer)
         {
             await databaseLinkDb.Customers.AddAsync(customer);

@@ -8,16 +8,8 @@ using Osiansdrystonewalls.com.Repositories;
 
 namespace Osiansdrystonewalls.com.Controllers
 {
-    public class CustomerController : Controller
+    public class CustomerController(IAccountRepository accountRepository, IBookingRepository bookingRepository) : Controller
     {
-        private readonly IAccountRepository accountRepository;
-        private readonly IBookingRepository bookingRepository;
-        public CustomerController(IAccountRepository accountRepository, IBookingRepository bookingRepository)
-        {
-            this.accountRepository = accountRepository;
-            this.bookingRepository = bookingRepository;
-        }
-
         [HttpGet]
         [ActionName("CreateAccount")]
         public IActionResult CreateAccount()
@@ -58,29 +50,31 @@ namespace Osiansdrystonewalls.com.Controllers
         [ActionName("LogIn")]
         public async Task<IActionResult> LogIn(LogInRequest logInRequest)
         {
-            // var foundCustomer = await databaseLinkDb.Customers.Where(cust => cust.Email == logInRequest.checkEmail).FirstOrDefaultAsync();
-
             var foundCustomer1 = await accountRepository.GetAccountSync(logInRequest);
 
-            var customerID = foundCustomer1.Id;
-
-            var foundCustomer = await accountRepository.GetASync(customerID);
-
-            if (foundCustomer1 == null)
+            if (foundCustomer1 != null)
             {
-                return View("IncorrectEmail");
-            }
+                var customerID = foundCustomer1.Id;
+                var foundCustomer = await accountRepository.GetASync(customerID);
 
-            if (foundCustomer1.Password != logInRequest.CheckPassword)
-            {
-                return View("IncorrectPassword");
+                if (foundCustomer1 == null)
+                {
+                    return View("IncorrectEmail");
+                }
+
+                if (foundCustomer1.Password != logInRequest.CheckPassword)
+                {
+                    return View("IncorrectPassword");
+                }
+                return RedirectToAction("LoggedIn", foundCustomer);
             }
-            return RedirectToAction("LoggedIn", foundCustomer);
+            else
+                return View("Error");
         }
 
         [HttpGet]
         [ActionName("LoggedIn")]
-        public async Task<IActionResult> LoggedIn(Customer foundCustomer, Guid id)
+        public async Task<IActionResult> LoggedIn(Guid id)
         {
             var foundCustomer1 = await accountRepository.GetASync(id);
 
@@ -197,8 +191,7 @@ namespace Osiansdrystonewalls.com.Controllers
                 JobName = editJobRequest.JobName,
                 Description = editJobRequest.Description,
             };
-           // var existingBooking = 
-                await bookingRepository.UpdateASync(jobRequest);
+            await bookingRepository.UpdateASync(jobRequest);
 
             return RedirectToAction("LoggedIn");
         }

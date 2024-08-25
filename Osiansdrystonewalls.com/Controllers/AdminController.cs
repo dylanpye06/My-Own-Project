@@ -9,16 +9,8 @@ using Osiansdrystonewalls.com.Repositories;
 
 namespace Osiansdrystonewalls.com.Controllers
 {
-    public class AdminController : Controller
+    public class AdminController(IAccountRepository accountRepository, IBookingRepository bookingRepository) : Controller
     {
-        private readonly IAccountRepository accountRepository;
-        private readonly IBookingRepository bookingRepository;
-        public AdminController(IAccountRepository accountRepository, IBookingRepository bookingRepository)
-        {
-            this.accountRepository = accountRepository;
-            this.bookingRepository = bookingRepository;
-        }
-
         [HttpGet]
         public IActionResult AdminLogIn() 
         { 
@@ -54,17 +46,9 @@ namespace Osiansdrystonewalls.com.Controllers
             return View();
         }
 
-       // [HttpPost]       
-       // public IActionResult AdminPage(Test test)
-       // {
-       //     return View();
-       // }
-
         [HttpPost]
         [ActionName("AdminViewAccounts")]
-        public async Task<IActionResult> AdminViewAccounts(
-          //  CreateAccountRequest createAccountRequest
-            )
+        public async Task<IActionResult> AdminViewAccounts()
         {
             var accounts = await accountRepository.GetAllASync();
             return View(accounts);
@@ -72,9 +56,7 @@ namespace Osiansdrystonewalls.com.Controllers
 
         [HttpPost]
         [ActionName("AdminViewJobs")]
-        public async Task<IActionResult> AdminViewJobRequests(
-         //   MakeABookingRequest makeABookingRequest
-            )
+        public async Task<IActionResult> AdminViewJobRequests()
         {
             var jobRequests = await bookingRepository.GetAllASync();
             return View(jobRequests);

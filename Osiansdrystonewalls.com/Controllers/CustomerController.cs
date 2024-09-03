@@ -6,6 +6,7 @@ using Osiansdrystonewalls.com.Models.Domain;
 using Osiansdrystonewalls.com.Models.ViewModels;
 using Osiansdrystonewalls.com.Repositories;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 
 namespace Osiansdrystonewalls.com.Controllers
 {
@@ -82,53 +83,34 @@ namespace Osiansdrystonewalls.com.Controllers
             return View(foundCustomer);
         }
 
-        //      [HttpPost]
-        //      [ActionName("LoadMakeABooking")]
-        //      public IActionResult LoadMakeABooking()
-        //      {
-        //          return View("MakeABooking");
-        //      }
-
         [HttpGet]
         [ActionName("MakeABooking")]
-        public async Task<IActionResult> MakeABooking()
+        public async Task<IActionResult> MakeABooking(Guid Id)
         {
-            var foundCustomer = await accountRepository.GetAllASync();
+            var foundCustomer = await accountRepository.GetASync(Id);
 
             var model = new MakeABookingRequest
             {
-                Customer = foundCustomer.Select(x => new SelectListItem { Text = x.FullName, Value = x.Id.ToString() })
+                Customer = foundCustomer
             };
 
             return View(model);
         }
 
-        [HttpPost]
-  //      [ActionName("MakeABooking")]
-        
-        public async Task<IActionResult> MakeABooking(MakeABookingRequest makeABookingRequest)
+        [HttpPost]     
+        public async Task<IActionResult> MakeABooking(MakeABookingRequest makeABookingRequest, Guid Id)
         {
+            var foundCustomer = await accountRepository.GetASync(Id);
+
             var jobRequest = new JobRequest
             {
                 JobName = makeABookingRequest.JobName,
-                Description = makeABookingRequest.Description
+                Description = makeABookingRequest.Description,
+                Customer = foundCustomer
             };
 
-  //          var customerBooking = new List<Customer>();
-  //          foreach(var customerBookingId in customerBooking)
-  //          {
-  //              var customerBookingIdAsGuid = Guid.Parse(customerBookingId);
-  //              var existingCustomer = await accountRepository.GetASync(customerBookingIdAsGuid);
-//
-  //              if(existingCustomer != null)
-  //              {
-  //                  customerBooking.Add(existingCustomer);
-  //              }
-  //          }
-  //          jobRequest.Customer = customerBooking;
-
             await bookingRepository.AddASync(jobRequest);
-            return RedirectToAction("LoggedIn");
+            return RedirectToAction("LoggedIn", foundCustomer);
         }
 
         [HttpGet]
@@ -165,7 +147,7 @@ namespace Osiansdrystonewalls.com.Controllers
 
         [HttpPost]
         [ActionName("CustomerEditAccount")]
-        public async Task<IActionResult> CustomerEditAccount(AdminEditAccountRequest editAccountRequest, Guid id)
+        public async Task<IActionResult> CustomerEditAccount(AdminEditAccountRequest editAccountRequest)
         {
             var customer = new Customer
             {
@@ -176,36 +158,32 @@ namespace Osiansdrystonewalls.com.Controllers
                 Password = editAccountRequest.Password,
                 PostCode = editAccountRequest.PostCode
             };
-
             await accountRepository.UpdateASync(customer);
 
-       //     var existingAccount = accountRepository.GetASync(id);
-
             return RedirectToAction("CustomerViewAccount", customer);
-            //+ existing account
         }
 
         [HttpGet]
         [ActionName("CustomerViewBooking")]
-        public async Task<IActionResult> CustomerViewBooking(Guid id)
+        public async Task<IActionResult> CustomerViewBooking(Guid Id)
         {
-            var foundBooking = await bookingRepository.GetASync(id);
+            var foundBooking = await bookingRepository.GetASync(Id);
 
-            return View("CustomerViewBooking", foundBooking);
+            return View(foundBooking);
         }
 
         [HttpGet]
         public async Task<IActionResult> CustomerEditBooking(Guid Id)
         {
-            var jobRequest = await bookingRepository.GetASync(Id);
+            var foundJobRequest = await bookingRepository.GetASync(Id);
 
-            if(jobRequest != null)
+            if(foundJobRequest != null)
             {
                 var editJobRequest = new AdminEditJobRequest
                 {
-                    Id = jobRequest.Id,
-                    JobName = jobRequest.JobName,
-                    Description = jobRequest.Description,
+                    Id = foundJobRequest.Id,
+                    JobName = foundJobRequest.JobName,
+                    Description = foundJobRequest.Description,
                 };
                 return View(editJobRequest);
             }
@@ -217,7 +195,7 @@ namespace Osiansdrystonewalls.com.Controllers
 
         [HttpPost]
         [ActionName("CustomerEditBooking")]
-        public async Task<IActionResult> CustomerEditBooking(AdminEditJobRequest editJobRequest)
+        public async Task<IActionResult> CustomerEditBooking(AdminEditJobRequest editJobRequest, Guid Id)
         {
             var jobRequest = new JobRequest
             {
@@ -227,7 +205,9 @@ namespace Osiansdrystonewalls.com.Controllers
             };
             await bookingRepository.UpdateASync(jobRequest);
 
-            return RedirectToAction("LoggedIn");
+            var foundCustomer = await accountRepository.GetASync(Id);
+
+            return RedirectToAction("LoggedIn", foundCustomer);
         }
 
         [HttpPost]

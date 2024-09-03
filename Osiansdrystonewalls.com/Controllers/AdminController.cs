@@ -59,6 +59,7 @@ namespace Osiansdrystonewalls.com.Controllers
         public async Task<IActionResult> AdminViewJobRequests()
         {
             var jobRequests = await bookingRepository.GetAllASync();
+
             return View(jobRequests);
         }
 

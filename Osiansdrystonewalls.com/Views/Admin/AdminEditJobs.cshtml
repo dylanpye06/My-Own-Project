@@ -4,7 +4,7 @@
 
 <div class="bg-secondary bg-opacity-25 py-2">
     <div class="container">
-        <h1>Admin Edit Accounts</h1>
+        <h1>Admin Edit Job Request</h1>
     </div>
 </div>
 
@@ -19,12 +19,17 @@
 
         <div class="mb-3">
             <label class="form-label">Job Name</label>
-            <input type="text" id="JobName" class="form-control" asp-for="JobName" />
+            <input type="text" id="JobName" class="form-control" asp-for="JobName"/>
         </div>
 
         <div class="mb-3">
             <label class="form-label">Description</label>
             <input type="text" id="Description" class="form-control" asp-for="Description" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Customer Name</label>
+            <input type="text" id="Customer" class="form-control" asp-for="Customer.FullName" readonly />
         </div>
 
         <div class="mb-3">

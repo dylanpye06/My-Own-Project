@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Osiansdrystonewalls.com.Models.Domain;
 
 namespace Osiansdrystonewalls.com.Models.ViewModels
 {
@@ -9,10 +10,6 @@ namespace Osiansdrystonewalls.com.Models.ViewModels
 
         //this is for a list howver we will only want to retieve one customer as there is only one
         // customer per job, method for only retiving a singlaur cusomer not a list? 
-        public IEnumerable<SelectListItem>? Customer { get; set; }
-
-        // collect tag
-
-        public string? CustomerBooking { get; set; }
+        public Customer? Customer { get; set; }
     }
 }

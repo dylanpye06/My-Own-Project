@@ -28,17 +28,11 @@
                     <td>@Model.JobName</td>
                     <td>@Model.Description</td>
                     <td>
-                        <div class="d-flex">
-                            @foreach (var customer in Model.Customer)
-
-                            {
-                                <span class="badge bg-secondary bg-opacity-100 me-1">@customer.FullName</span>
-                            }
-                        </div>
+                                <span class="badge bg-secondary bg-opacity-100 me-1">@Model.Customer.FullName</span>
                     </td>
                     <td>
-                        <a asp-area="" asp-controller="Customer" asp-action="CustomerEditBookings"
-                           asp-route-id="@Model.Id">Edit</a>
+                        <a asp-area="" asp-controller="Customer" asp-action="CustomerEditBooking"
+                           asp-route-id="@Model.Customer.Id">Edit</a>
                     </td>
                 </tr>
             </tbody>
@@ -51,5 +45,5 @@
 </div>
 
 <div class="container mb-3 py-2">
-    <a class="btn btn-success" asp-area="" asp-controller="Customer" asp-action="LoggedIn">Back</a>
+    <a class="btn btn-success" asp-area="" asp-controller="Customer" asp-action="LoggedIn" asp-route-id="@Model.Customer.Id">Back</a>
 </div>

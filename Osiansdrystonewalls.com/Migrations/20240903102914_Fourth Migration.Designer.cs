@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Osiansdrystonewalls.com.Data;
 
@@ -11,9 +12,11 @@ using Osiansdrystonewalls.com.Data;
 namespace Osiansdrystonewalls.com.Migrations
 {
     [DbContext(typeof(DatabaseLinkDb))]
-    partial class DatabaseLinkDbModelSnapshot : ModelSnapshot
+    [Migration("20240903102914_Fourth Migration")]
+    partial class FourthMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,7 +62,7 @@ namespace Osiansdrystonewalls.com.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CustomerId")
+                    b.Property<Guid?>("CustomersNameId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
@@ -70,18 +73,18 @@ namespace Osiansdrystonewalls.com.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CustomersNameId");
 
                     b.ToTable("JobRequests");
                 });
 
             modelBuilder.Entity("Osiansdrystonewalls.com.Models.Domain.JobRequest", b =>
                 {
-                    b.HasOne("Osiansdrystonewalls.com.Models.Domain.Customer", "Customer")
+                    b.HasOne("Osiansdrystonewalls.com.Models.Domain.Customer", "CustomersName")
                         .WithMany()
-                        .HasForeignKey("CustomerId");
+                        .HasForeignKey("CustomersNameId");
 
-                    b.Navigation("Customer");
+                    b.Navigation("CustomersName");
                 });
 #pragma warning restore 612, 618
         }

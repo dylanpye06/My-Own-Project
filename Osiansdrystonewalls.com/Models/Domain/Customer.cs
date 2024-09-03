@@ -12,6 +12,5 @@ namespace Osiansdrystonewalls.com.Models.Domain
         public required string PhoneNumber { get; set; }
         public required string PostCode { get; set; }
         public required string Password { get; set; }
-        public ICollection<JobRequest>? JobRequests { get; set; }
     }
 }

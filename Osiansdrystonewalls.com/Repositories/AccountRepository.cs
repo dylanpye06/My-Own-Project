@@ -31,17 +31,16 @@ namespace Osiansdrystonewalls.com.Repositories
         public async Task<IEnumerable<Customer>> GetAllASync()
         {
             return await databaseLinkDb.Customers.ToListAsync();
-          //  return await databaseLinkDb.Customers.Include(x => x.JobRequests).ToListAsync();
         }
 
-        public Task<Customer?> GetASync(Guid id)
+        public async Task<Customer?> GetASync(Guid id)
         {
-            return databaseLinkDb.Customers.Where(x => x.Id == id).FirstOrDefaultAsync();
+            return await databaseLinkDb.Customers.Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
-        public Task<Customer?> GetAccountSync (LogInRequest logInRequest)
+        public async Task<Customer?> GetAccountSync (LogInRequest logInRequest)
         {
-            return databaseLinkDb.Customers.Where(cust => cust.Email == logInRequest.CheckEmail).FirstOrDefaultAsync();
+            return await databaseLinkDb.Customers.Where(cust => cust.Email == logInRequest.CheckEmail).FirstOrDefaultAsync();
         }
 
         public async Task<Customer?> UpdateASync(Customer customer)

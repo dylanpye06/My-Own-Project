@@ -29,13 +29,7 @@
                         <td>@jobRequest.JobName</td>
                         <td>@jobRequest.Description</td>
                         <td>
-                            <div class="d-flex">
-                                @foreach (var customer in jobRequest.Customer)
-
-                                {
-                                    <span class="badge bg-secondary bg-opacity-100 me-1">@customer.FullName</span>
-                                }
-                            </div>
+                            <span class="badge bg-secondary bg-opacity-100 me-1">@jobRequest.Customer.FullName</span>
                         </td>
                         <td>
                             <a asp-area="" asp-controller="Admin" asp-action="AdminEditJobs"

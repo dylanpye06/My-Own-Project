@@ -1,16 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Osiansdrystonewalls.com.Data;
 using Osiansdrystonewalls.com.Models.Domain;
+using System.Linq;
 
 namespace Osiansdrystonewalls.com.Repositories
 {
-    public class BookingRepository : IBookingRepository
+    public class BookingRepository(DatabaseLinkDb databaseLinkDb) : IBookingRepository
     {
-        private readonly DatabaseLinkDb databaseLinkDb;
-        public BookingRepository(DatabaseLinkDb databaseLinkDb)
-        {
-            this.databaseLinkDb = databaseLinkDb;
-        }
+        private readonly DatabaseLinkDb databaseLinkDb = databaseLinkDb;
 
         public async Task<JobRequest> AddASync(JobRequest jobRequest)
         {
@@ -35,12 +32,14 @@ namespace Osiansdrystonewalls.com.Repositories
 
         public async Task<IEnumerable<JobRequest>> GetAllASync()
         {
-            return await databaseLinkDb.JobRequests.ToListAsync();
+            return await databaseLinkDb.JobRequests.Include(x => x.Customer).ToListAsync();
         }
 
-        public Task<JobRequest?> GetASync(Guid id)
+        public async Task<JobRequest?> GetASync(Guid CustomerId)
         {
-            return databaseLinkDb.JobRequests.Where(x => x.Id == id).FirstOrDefaultAsync();
+
+
+            return await databaseLinkDb.JobRequests.Include(x => x.Customer).Where(x => x.Customer.Id == CustomerId).FirstOrDefaultAsync();
         }
 
         public async Task<JobRequest?> UpdateASync(JobRequest jobRequest)

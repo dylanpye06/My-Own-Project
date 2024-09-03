@@ -31,6 +31,7 @@ namespace Osiansdrystonewalls.com.Repositories
         public async Task<IEnumerable<Customer>> GetAllASync()
         {
             return await databaseLinkDb.Customers.ToListAsync();
+          //  return await databaseLinkDb.Customers.Include(x => x.JobRequests).ToListAsync();
         }
 
         public Task<Customer?> GetASync(Guid id)

@@ -2,7 +2,7 @@
 {
     public class AdminRequest
     {
-        public required string adminEmail { get; set; }
-        public required string adminPassword { get; set; }
+        public required string AdminEmail { get; set; }
+        public required string AdminPassword { get; set; }
     }
 }

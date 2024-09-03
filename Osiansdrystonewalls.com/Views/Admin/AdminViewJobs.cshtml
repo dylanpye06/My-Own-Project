@@ -18,6 +18,7 @@
                 <tr>
                     <th>JobName</th>
                     <th>Description</th>
+                    <th>Account Name</th>
                     <th> </th>
                 </tr>
             </thead>
@@ -27,6 +28,15 @@
                     <tr>
                         <td>@jobRequest.JobName</td>
                         <td>@jobRequest.Description</td>
+                        <td>
+                            <div class="d-flex">
+                                @foreach (var customer in jobRequest.Customer)
+
+                                {
+                                    <span class="badge bg-secondary bg-opacity-100 me-1">@customer.FullName</span>
+                                }
+                            </div>
+                        </td>
                         <td>
                             <a asp-area="" asp-controller="Admin" asp-action="AdminEditJobs"
                                asp-route-id="@jobRequest.Id">Edit</a>
@@ -46,7 +56,7 @@
     <form method="post">
 
         <div class="mb-3">
-            <button type="submit" class="btn btn-success" asp-area="" asp-controller="Admin" asp-action="AdminPage">Return To Admin Page</button>
+            <a class="btn btn-success" asp-area="" asp-controller="Admin" asp-action="AdminPage">Back</a>
         </div>
 
     </form>

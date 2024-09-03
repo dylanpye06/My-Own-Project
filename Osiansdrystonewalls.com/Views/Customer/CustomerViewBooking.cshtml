@@ -18,6 +18,7 @@
                     <th>Id</th>
                     <th>Job Name</th>
                     <th>Description</th>
+                    <th>Account Name</th>
                     <th> </th>
                 </tr>
             </thead>
@@ -26,6 +27,15 @@
                     <td>@Model.Id</td>
                     <td>@Model.JobName</td>
                     <td>@Model.Description</td>
+                    <td>
+                        <div class="d-flex">
+                            @foreach (var customer in Model.Customer)
+
+                            {
+                                <span class="badge bg-secondary bg-opacity-100 me-1">@customer.FullName</span>
+                            }
+                        </div>
+                    </td>
                     <td>
                         <a asp-area="" asp-controller="Customer" asp-action="CustomerEditBookings"
                            asp-route-id="@Model.Id">Edit</a>

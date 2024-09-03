@@ -22,20 +22,13 @@
         </div>
 
         <div class="mb-3">
-            <button type="submit" class="btn btn-success" asp-area="" asp-controller="Customer" asp-action="LogIn" >Log In</button>
+            <div class="d-flex">
+                <button type="submit" class="btn btn-success" asp-area="" asp-controller="Customer" asp-action="LogIn">Log In</button>
+
+                <a class="btn btn-success ms-md-3" asp-area="" asp-controller="Customer" asp-action="CreateAccount">Create Account</a>
+
+                <a class="btn btn-success ms-md-3" asp-area="" asp-controller="Home" asp-action="HomePage">Back</a>
+            </div>
         </div>
-
-        <a class="btn btn-dark" asp-area="" asp-controller="Home" asp-action="HomePage">Back</a>
-
     </form>
-</div>
-
-<div class="float-end mb-3 card border-dark bg-opacity-50" style="width: 18rem;">
-    <div class="card-body bg-success">
-        <h5 class="card-title">Dont have an account?</h5>
-        <p class="card-text text-dark">
-            Click Here!
-        </p>
-        <a class="btn btn-primary" asp-area="" asp-controller="Customer" asp-action="CreateAccount">Create Account</a>
-    </div>
 </div>

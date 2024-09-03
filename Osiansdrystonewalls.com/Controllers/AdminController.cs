@@ -23,12 +23,12 @@ namespace Osiansdrystonewalls.com.Controllers
             var adminCheckPassword = "DryStone";
             var adminCheckEmail = "Osiancurtis0@gmail.com";
 
-            if (adminRequest.adminEmail != adminCheckEmail)
+            if (adminRequest.AdminEmail != adminCheckEmail)
             {
                 return View("IncorrectEmail");
             }
 
-            if(adminRequest.adminPassword != adminCheckPassword)
+            if(adminRequest.AdminPassword != adminCheckPassword)
             {
                 return View("IncorrectPassword");
             }
@@ -66,6 +66,7 @@ namespace Osiansdrystonewalls.com.Controllers
         public async Task<IActionResult> AdminEditAccounts(Guid Id)
         {
             var account = await accountRepository.GetASync(Id);
+
             if (account != null)
             {
                 var adminEditAccountRequest = new AdminEditAccountRequest

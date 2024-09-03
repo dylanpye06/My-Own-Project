@@ -5,6 +5,7 @@ using Osiansdrystonewalls.com.Data;
 using Osiansdrystonewalls.com.Models.Domain;
 using Osiansdrystonewalls.com.Models.ViewModels;
 using Osiansdrystonewalls.com.Repositories;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Osiansdrystonewalls.com.Controllers
 {
@@ -74,22 +75,37 @@ namespace Osiansdrystonewalls.com.Controllers
 
         [HttpGet]
         [ActionName("LoggedIn")]
-        public async Task<IActionResult> LoggedIn(Guid id)
+        public async Task<IActionResult> LoggedIn(Guid Id)
         {
-            var foundCustomer1 = await accountRepository.GetASync(id);
+            var foundCustomer = await accountRepository.GetASync(Id);
 
-            return View(foundCustomer1);
+            return View(foundCustomer);
         }
 
-        [HttpPost]
-        [ActionName("LoadMakeABooking")]
-        public IActionResult LoadMakeABooking()
-        {
-            return View("MakeABooking");
-        }
+        //      [HttpPost]
+        //      [ActionName("LoadMakeABooking")]
+        //      public IActionResult LoadMakeABooking()
+        //      {
+        //          return View("MakeABooking");
+        //      }
 
-        [HttpPost]
+        [HttpGet]
         [ActionName("MakeABooking")]
+        public async Task<IActionResult> MakeABooking()
+        {
+            var foundCustomer = await accountRepository.GetAllASync();
+
+            var model = new MakeABookingRequest
+            {
+                Customer = foundCustomer.Select(x => new SelectListItem { Text = x.FullName, Value = x.Id.ToString() })
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+  //      [ActionName("MakeABooking")]
+        
         public async Task<IActionResult> MakeABooking(MakeABookingRequest makeABookingRequest)
         {
             var jobRequest = new JobRequest
@@ -97,15 +113,29 @@ namespace Osiansdrystonewalls.com.Controllers
                 JobName = makeABookingRequest.JobName,
                 Description = makeABookingRequest.Description
             };
+
+  //          var customerBooking = new List<Customer>();
+  //          foreach(var customerBookingId in customerBooking)
+  //          {
+  //              var customerBookingIdAsGuid = Guid.Parse(customerBookingId);
+  //              var existingCustomer = await accountRepository.GetASync(customerBookingIdAsGuid);
+//
+  //              if(existingCustomer != null)
+  //              {
+  //                  customerBooking.Add(existingCustomer);
+  //              }
+  //          }
+  //          jobRequest.Customer = customerBooking;
+
             await bookingRepository.AddASync(jobRequest);
             return RedirectToAction("LoggedIn");
         }
 
         [HttpGet]
         [ActionName("CustomerViewAccount")]
-        public async Task<IActionResult> CustomerViewAccount(Guid id)
+        public async Task<IActionResult> CustomerViewAccount(Guid Id)
         {
-            var foundCustomer = await accountRepository.GetASync(id);
+            var foundCustomer = await accountRepository.GetASync(Id);
             return View(foundCustomer);
         }
 
@@ -146,9 +176,13 @@ namespace Osiansdrystonewalls.com.Controllers
                 Password = editAccountRequest.Password,
                 PostCode = editAccountRequest.PostCode
             };
-            var existingAccount = accountRepository.GetASync(id);
+
             await accountRepository.UpdateASync(customer);
-            return RedirectToAction("LoggedIn", existingAccount);
+
+       //     var existingAccount = accountRepository.GetASync(id);
+
+            return RedirectToAction("CustomerViewAccount", customer);
+            //+ existing account
         }
 
         [HttpGet]

@@ -4,18 +4,13 @@ using CloudinaryDotNet.Actions;
 
 namespace Osiansdrystonewalls.com.Repositories
 {
-    public class ImageRepository : IImageRepository
+    public class ImageRepository(IConfiguration configuration) : IImageRepository
     {
-        private readonly IConfiguration configuration;
-        private readonly Account account;
-        public ImageRepository(IConfiguration configuration)
-        {
-            this.configuration = configuration;
-            account = new Account(
+        private readonly IConfiguration configuration = configuration;
+        private readonly Account account = new Account(
                 configuration.GetSection("Cloudinary")["CloudName"],
                 configuration.GetSection("Cloudinary")["ApiKey"],
                 configuration.GetSection("Cloudinary")["ApiSecret"]);
-        }
 
         public async Task<string> UploadASync(IFormFile file)
         {
@@ -31,7 +26,7 @@ namespace Osiansdrystonewalls.com.Repositories
 
             if (uploadResult != null && uploadResult.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                return uploadResult.SecureUri.ToString();
+                return uploadResult.SecureUrl.ToString();
             }
             else
                 return null;

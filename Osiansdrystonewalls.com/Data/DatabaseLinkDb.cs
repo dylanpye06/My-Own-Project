@@ -4,13 +4,8 @@ using Osiansdrystonewalls.com.Models.Domain;
 
 namespace Osiansdrystonewalls.com.Data
 {
-    public class DatabaseLinkDb : DbContext
+    public class DatabaseLinkDb(DbContextOptions options) : DbContext(options)
     {
-        public DatabaseLinkDb(DbContextOptions options) : base(options)
-        {
-            
-        }
-
         public DbSet<Customer> Customers { get; set; }
 
         public DbSet<JobRequest> JobRequests { get; set; }

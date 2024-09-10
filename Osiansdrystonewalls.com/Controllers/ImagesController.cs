@@ -7,14 +7,9 @@ namespace Osiansdrystonewalls.com.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ImagesController : ControllerBase
+    public class ImagesController(IImageRepository imageRepository) : ControllerBase
     {
-        private readonly IImageRepository imageRepository;
-
-        public ImagesController(IImageRepository imageRepository) 
-        { 
-            this.imageRepository = imageRepository;
-        }
+        private readonly IImageRepository imageRepository = imageRepository;
 
         [HttpPost]
         public async Task<IActionResult> UploadASync(IFormFile file)

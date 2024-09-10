@@ -10,9 +10,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<DatabaseLinkDb>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("ThisIsAConnectionString")));
 
- builder.Services.AddScoped<IAccountRepository, AccountRepository>();
- builder.Services.AddScoped<IBookingRepository, BookingRepository>();
-
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+builder.Services.AddScoped<IImageRepository, ImageRepository>();
 
 var app = builder.Build();
 

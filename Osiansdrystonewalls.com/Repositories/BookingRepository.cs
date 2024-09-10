@@ -37,8 +37,6 @@ namespace Osiansdrystonewalls.com.Repositories
 
         public async Task<JobRequest?> GetASync(Guid CustomerId)
         {
-
-
             return await databaseLinkDb.JobRequests.Include(x => x.Customer).Where(x => x.Customer.Id == CustomerId).FirstOrDefaultAsync();
         }
 

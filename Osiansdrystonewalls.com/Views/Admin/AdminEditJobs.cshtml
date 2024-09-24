@@ -33,13 +33,15 @@
         </div>
 
         <div class="mb-3">
+            <label class="form-label">Customer Email</label>
+            <input type="text" id="Customer" class="form-control" asp-for="Customer.Email" readonly />
+        </div>
 
+        <div class="mb-3">
             <div class="d-flex">
-
                 <button type="submit" class="btn btn-success">Save Changes</button>
 
                 <button type="submit" class="btn btn-danger ms-2" asp-area="" asp-controller="Admin" asp-action="DeleteJobRequest">Delete</button>
-
             </div>
         </div>
     </form>

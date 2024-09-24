@@ -29,10 +29,9 @@
 
         <div class="mb-3">
             <div class="d-flex">
+                <button type="submit" class="btn btn-success" asp-route-id="@Model.Customer">Save Changes</button>
 
-                <button type="submit" class="btn btn-success" asp-route-id="@Model.Customer.Id">Save Changes</button>
-
-                <button type="submit" class="btn btn-danger ms-2" asp-area="" asp-controller="Customer" asp-action="DeleteBooking">Delete</button>
+                <button type="submit" class="btn btn-danger ms-2" asp-area="" asp-controller="Customer" asp-action="DeleteJobRequest">Delete</button>
             </div>
         </div>
     </form>

@@ -19,6 +19,7 @@
                     <th>JobName</th>
                     <th>Description</th>
                     <th>Account Name</th>
+                    <th>Account Email</th>
                     <th> </th>
                 </tr>
             </thead>
@@ -30,6 +31,9 @@
                         <td>@jobRequest.Description</td>
                         <td>
                             <span class="badge bg-secondary bg-opacity-100 me-1">@jobRequest.Customer.FullName</span>
+                        </td>
+                        <td>
+                            <span class="badge bg-secondary bg-opacity-100 me-1">@jobRequest.Customer.Email</span>
                         </td>
                         <td>
                             <a asp-area="" asp-controller="Admin" asp-action="AdminEditJobs"

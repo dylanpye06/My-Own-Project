@@ -19,5 +19,11 @@ namespace Osiansdrystonewalls.com.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [HttpGet]
+        public IActionResult ExamplesAndPrices() 
+        {
+            return View("ExamplesAndPrices");
+        }
     }
 }

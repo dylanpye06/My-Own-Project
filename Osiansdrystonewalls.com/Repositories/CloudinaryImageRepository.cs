@@ -1,17 +1,23 @@
-﻿
+﻿using System.Net;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Osiansdrystonewalls.com.Repositories
 {
-    public class ImageRepository(IConfiguration configuration) : IImageRepository
+    public class CloudinaryImageRepository : iImageRepository
     {
-        private readonly IConfiguration configuration = configuration;
-        private readonly Account account = new Account(
+        private readonly IConfiguration configuration;
+        private readonly Account account;
+        public CloudinaryImageRepository(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+            account = new Account(
                 configuration.GetSection("Cloudinary")["CloudName"],
                 configuration.GetSection("Cloudinary")["ApiKey"],
                 configuration.GetSection("Cloudinary")["ApiSecret"]);
-
+        }
         public async Task<string> UploadASync(IFormFile file)
         {
             var client = new Cloudinary(account);
@@ -26,10 +32,9 @@ namespace Osiansdrystonewalls.com.Repositories
 
             if (uploadResult != null && uploadResult.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                return uploadResult.SecureUrl.ToString();
+                return uploadResult.SecureUri.ToString();
             }
-            else
-                return null;
+            return null;
         }
     }
 }

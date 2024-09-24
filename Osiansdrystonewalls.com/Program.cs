@@ -12,7 +12,8 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("ThisIsAConnectio
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
-builder.Services.AddScoped<IImageRepository, ImageRepository>();
+
+builder.Services.AddScoped<iImageRepository, CloudinaryImageRepository>();
 
 var app = builder.Build();
 

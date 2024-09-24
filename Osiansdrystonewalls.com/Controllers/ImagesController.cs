@@ -7,21 +7,27 @@ namespace Osiansdrystonewalls.com.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ImagesController(IImageRepository imageRepository) : ControllerBase
+    public class ImagesController : ControllerBase
     {
-        private readonly IImageRepository imageRepository = imageRepository;
+        private readonly iImageRepository imageRepository;
+
+        public ImagesController(iImageRepository imageRepository)
+        {
+            this.imageRepository = imageRepository;
+        }
 
         [HttpPost]
         public async Task<IActionResult> UploadASync(IFormFile file)
         {
             var imageURL = await imageRepository.UploadASync(file);
 
-            if(imageURL == null)
+            if (imageURL == null)
             {
-                return Problem("Image uplaod was not successful!", null, (int)HttpStatusCode.InternalServerError);
+                return Problem("This is not correct", null, (int)HttpStatusCode.InternalServerError);
             }
-
-            return new JsonResult(new {link = imageURL});
+            else
+                return
+                    new JsonResult(new { link = imageURL });
         }
     }
 }

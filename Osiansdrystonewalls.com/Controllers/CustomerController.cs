@@ -30,14 +30,12 @@ namespace Osiansdrystonewalls.com.Controllers
                 PostCode = createAccountRequest.PostCode,
                 Password = createAccountRequest.Password
             };
-
             var checkEmail = await accountRepository.CreateAccountCheck(createAccountRequest);
 
             if (checkEmail != null)
             {
                 return View("Error");
             }
-
             await accountRepository.AddASync(customer);
             return View("HomePage");         
         }
@@ -79,7 +77,6 @@ namespace Osiansdrystonewalls.com.Controllers
         public async Task<IActionResult> LoggedIn(Guid Id)
         {
             var foundCustomer = await accountRepository.GetASync(Id);
-
             return View(foundCustomer);
         }
 
@@ -93,7 +90,6 @@ namespace Osiansdrystonewalls.com.Controllers
             {
                 Customer = foundCustomer
             };
-
             return View(model);
         }
 
@@ -108,7 +104,6 @@ namespace Osiansdrystonewalls.com.Controllers
                 Description = makeABookingRequest.Description,
                 Customer = foundCustomer
             };
-
             await bookingRepository.AddASync(jobRequest);
             return RedirectToAction("LoggedIn", foundCustomer);
         }
@@ -159,7 +154,6 @@ namespace Osiansdrystonewalls.com.Controllers
                 PostCode = editAccountRequest.PostCode
             };
             await accountRepository.UpdateASync(customer);
-
             return RedirectToAction("CustomerViewAccount", customer);
         }
 
@@ -167,15 +161,14 @@ namespace Osiansdrystonewalls.com.Controllers
         [ActionName("CustomerViewBooking")]
         public async Task<IActionResult> CustomerViewBooking(Guid Id)
         {
-            var foundBooking = await bookingRepository.GetASync(Id);
-
+            var foundBooking = await bookingRepository.GetASyncCustomer(Id);
             return View(foundBooking);
         }
 
         [HttpGet]
         public async Task<IActionResult> CustomerEditBooking(Guid Id)
         {
-            var foundJobRequest = await bookingRepository.GetASync(Id);
+            var foundJobRequest = await bookingRepository.GetASyncCustomer(Id);
 
             if(foundJobRequest != null)
             {
@@ -195,19 +188,17 @@ namespace Osiansdrystonewalls.com.Controllers
 
         [HttpPost]
         [ActionName("CustomerEditBooking")]
-        public async Task<IActionResult> CustomerEditBooking(AdminEditJobRequest editJobRequest, Guid Id)
+        public async Task<IActionResult> CustomerEditBooking(AdminEditJobRequest adminEditJobRequest, Guid id)
         {
             var jobRequest = new JobRequest
             {
-                Id = editJobRequest.Id,
-                JobName = editJobRequest.JobName,
-                Description = editJobRequest.Description,
+                Id = adminEditJobRequest.Id,
+                JobName = adminEditJobRequest.JobName,
+                Description = adminEditJobRequest.Description,
             };
-            await bookingRepository.UpdateASync(jobRequest);
-
-            var foundCustomer = await accountRepository.GetASync(Id);
-
-            return RedirectToAction("LoggedIn", foundCustomer);
+            await bookingRepository.UpdateASyncCustomer(jobRequest, id);
+            var foundCustomer = await accountRepository.GetASync(id);
+            return RedirectToAction("CustomerViewBooking", foundCustomer);
         }
 
         [HttpPost]
@@ -217,25 +208,21 @@ namespace Osiansdrystonewalls.com.Controllers
 
             if (account != null)
             {
-                //show success notification
-                return View("HomePage");
+                return View("Success");
             }
-            //show error notification
-            return View("Error");
+            return View("NotSuccessful");
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteJobRequest(AdminEditJobRequest adminEditJobRequest)
+        public async Task<IActionResult> DeleteJobRequest(Guid id)
         {
-            var jobRequest = await bookingRepository.DeleteASync(adminEditJobRequest.Id);
+            var jobRequest = await bookingRepository.DeleteASyncCustomer(id);
 
             if (jobRequest != null)
             {
-                //show success notification
-                return View("LoggedIn");
+                return View("Success");
             }
-            //show error notification
-            return View("Error");
+            return View("NotSuccessful");
         }
     }
 }

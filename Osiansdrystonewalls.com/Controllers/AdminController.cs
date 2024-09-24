@@ -59,7 +59,6 @@ namespace Osiansdrystonewalls.com.Controllers
         public async Task<IActionResult> AdminViewJobRequests()
         {
             var jobRequests = await bookingRepository.GetAllASync();
-
             return View(jobRequests);
         }
 
@@ -111,26 +110,26 @@ namespace Osiansdrystonewalls.com.Controllers
 
             if(account != null) 
             { 
-                //show success notification
                 return View("AdminPage");
             }
-            //show error notification
-            return View("Error");
+            return View("NotSuccessful");
         }
 
         [HttpGet]
         public async Task<IActionResult> AdminEditJobs(Guid Id)
         {
-            var jobRequest = await bookingRepository.GetASync(Id);
-            if (jobRequest != null)
+            var foundJobRequest = await bookingRepository.GetASyncAdmin(Id);
+
+            if (foundJobRequest != null)
             {
-                var adminEditJobRequest = new AdminEditJobRequest
+                var editJobRequest = new AdminEditJobRequest
                 {
-                    Id = jobRequest.Id,
-                    JobName = jobRequest.JobName,
-                    Description = jobRequest.Description,                 
+                    Id = foundJobRequest.Id,
+                    JobName = foundJobRequest.JobName,
+                    Description = foundJobRequest.Description,
+                    Customer = foundJobRequest.Customer,
                 };
-                return View(adminEditJobRequest);
+                return View(editJobRequest);
             }
             else
             {
@@ -148,22 +147,20 @@ namespace Osiansdrystonewalls.com.Controllers
                 JobName = adminEditJobRequest.JobName,
                 Description = adminEditJobRequest.Description,
             };
-            await bookingRepository.UpdateASync(jobRequest);
+            await bookingRepository.UpdateASyncAdmin(jobRequest);
             return RedirectToAction("AdminPage");
         }
 
         [HttpPost]
         public async Task<IActionResult> DeleteJobRequest(AdminEditJobRequest adminEditJobRequest)
         {
-            var jobRequest = await bookingRepository.DeleteASync(adminEditJobRequest.Id);
+            var jobRequest = await bookingRepository.DeleteASyncAdmin(adminEditJobRequest.Id);
 
             if (jobRequest != null)
             {
-                //show success notification
                 return View("AdminPage");
             }
-            //show error notification
-            return View("Error");
+            return View("NotSuccessful");
         }
     }
 }

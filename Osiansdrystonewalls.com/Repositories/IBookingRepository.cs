@@ -6,13 +6,18 @@ namespace Osiansdrystonewalls.com.Repositories
     {
         Task<IEnumerable<JobRequest>> GetAllASync();
 
-        Task<JobRequest?> GetASync(Guid id);
+        Task<JobRequest?> GetASyncCustomer(Guid Id);
 
         Task<JobRequest> AddASync(JobRequest jobRequest);
 
-        Task<JobRequest?> UpdateASync(JobRequest jobRequest);
+        Task<JobRequest?> UpdateASyncAdmin(JobRequest jobRequest);
 
-        Task<JobRequest?> DeleteASync(Guid id);
+        Task<JobRequest?> UpdateASyncCustomer(JobRequest jobRequest, Guid CustomerId);
+
+        Task<JobRequest?> DeleteASyncAdmin(Guid id);
+        Task<JobRequest?> DeleteASyncCustomer(Guid CustomerId);
+
+        Task<JobRequest?> GetASyncAdmin(Guid Id);
     }
 }
 

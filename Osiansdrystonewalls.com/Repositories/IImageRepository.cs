@@ -1,9 +1,8 @@
-﻿
-
-namespace Osiansdrystonewalls.com.Repositories
+﻿namespace Osiansdrystonewalls.com.Repositories
 {
-    public interface IImageRepository
+    public interface iImageRepository
     {
         Task<string> UploadASync(IFormFile file);
+
     }
 }
